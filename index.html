@@ -6,7 +6,20 @@
   <title>Typescript todo list</title>
 </head>
 <body>
-  <p>Hello</p>
+  <form>
+    <label for="">New task</label>
+    <input
+      type="text"
+      placeholder="New task"
+      id="input"
+    >
+    <button type="submit" id="submit">Add task</button>
+  </form>
+
+  <section>
+    <ul id="tasks-container">
+    </ul>
+  </section>
   <script src="/dist/index.js"></script>
 </body>
 </html>

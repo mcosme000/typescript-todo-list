@@ -22,20 +22,39 @@ interface Todo {
 
 const tasks: Todo[] = loadData();
 
+const createNewTask = (task: Todo): HTMLLIElement => {
+  const newTask = document.createElement("LI") as HTMLLIElement;
+  newTask.innerText = task.text
+  return newTask;
+}
+
+const createCheckbox = (task: Todo): HTMLInputElement => {
+  const checkbox = document.createElement("INPUT") as HTMLInputElement;
+  checkbox.type = "checkbox";
+  checkbox.checked = task.completed;
+  checkbox.addEventListener("change", () => {
+    console.log("changed");
+    task.completed = checkbox.checked;
+    saveData();
+  })
+  return checkbox;
+}
+
+const createDeleteButton = (): HTMLButtonElement => {
+  const deleteBtn = document.createElement("BUTTON") as HTMLButtonElement;
+  deleteBtn.innerText = "Delete Task";
+  return deleteBtn;
+}
+
+
 const displayTasks = (tasks: Todo[]) => {
   list.innerHTML = "";
   tasks.forEach((task) => {
-    const newTask = document.createElement("LI") as HTMLLIElement;
-    newTask.innerText = task.text
-    const checkbox = document.createElement("INPUT") as HTMLInputElement;
-    checkbox.type = "checkbox";
-    checkbox.checked = task.completed;
-    checkbox.addEventListener("change", () => {
-      console.log("changed");
-      task.completed = checkbox.checked;
-      saveData();
-    })
+    const newTask = createNewTask(task)
+    const checkbox = createCheckbox(task);
+    const deleteBtn = createDeleteButton();
     newTask.append(checkbox)
+    newTask.append(deleteBtn)
     list?.appendChild(newTask)
   })
 }

@@ -3,13 +3,26 @@ var form = document.querySelector("form");
 var button = document.getElementById("submit");
 var input = document.getElementById("input");
 var list = document.getElementById("tasks-container");
+var tasks = [];
+var displayTasks = function (tasks) {
+    list.innerHTML = "";
+    console.log(tasks);
+    tasks.forEach(function (task) {
+        var newTask = document.createElement("LI");
+        newTask.innerText = task.text;
+        var checkbox = document.createElement("INPUT");
+        checkbox.type = "checkbox";
+        newTask.append(checkbox);
+        list === null || list === void 0 ? void 0 : list.appendChild(newTask);
+    });
+};
 var addNewTask = function (task) {
-    var newTask = document.createElement("LI");
-    newTask.innerText = task;
-    var checkbox = document.createElement("INPUT");
-    checkbox.type = "checkbox";
-    newTask.append(checkbox);
-    list === null || list === void 0 ? void 0 : list.appendChild(newTask);
+    var newTodo = {
+        text: task,
+        completed: false
+    };
+    tasks.push(newTodo);
+    displayTasks(tasks);
 };
 form.addEventListener("submit", function (e) {
     e.preventDefault();

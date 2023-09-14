@@ -11,6 +11,10 @@ const loadData = (): Todo[] => {
   return JSON.parse(JSONdata)
 }
 
+const saveData = () => {
+  localStorage.setItem("todo", JSON.stringify(tasks))
+}
+
 interface Todo {
   text: string,
   completed: boolean
@@ -20,12 +24,17 @@ const tasks: Todo[] = loadData();
 
 const displayTasks = (tasks: Todo[]) => {
   list.innerHTML = "";
-  console.log(tasks);
   tasks.forEach((task) => {
-    let newTask = document.createElement("LI") as HTMLLIElement;
+    const newTask = document.createElement("LI") as HTMLLIElement;
     newTask.innerText = task.text
-    let checkbox = document.createElement("INPUT") as HTMLInputElement;
+    const checkbox = document.createElement("INPUT") as HTMLInputElement;
     checkbox.type = "checkbox";
+    checkbox.checked = task.completed;
+    checkbox.addEventListener("change", () => {
+      console.log("changed");
+      task.completed = checkbox.checked;
+      saveData();
+    })
     newTask.append(checkbox)
     list?.appendChild(newTask)
   })
@@ -38,7 +47,7 @@ const addNewTask = (task: string) => {
   }
   tasks.push(newTodo);
   displayTasks(tasks);
-  localStorage.setItem("todo", JSON.stringify(tasks))
+  saveData();
 }
 
 form.addEventListener("submit", (e) => {

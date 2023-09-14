@@ -10,15 +10,23 @@ var loadData = function () {
         return [];
     return JSON.parse(JSONdata);
 };
+var saveData = function () {
+    localStorage.setItem("todo", JSON.stringify(tasks));
+};
 var tasks = loadData();
 var displayTasks = function (tasks) {
     list.innerHTML = "";
-    console.log(tasks);
     tasks.forEach(function (task) {
         var newTask = document.createElement("LI");
         newTask.innerText = task.text;
         var checkbox = document.createElement("INPUT");
         checkbox.type = "checkbox";
+        checkbox.checked = task.completed;
+        checkbox.addEventListener("change", function () {
+            console.log("changed");
+            task.completed = checkbox.checked;
+            saveData();
+        });
         newTask.append(checkbox);
         list === null || list === void 0 ? void 0 : list.appendChild(newTask);
     });
@@ -30,7 +38,7 @@ var addNewTask = function (task) {
     };
     tasks.push(newTodo);
     displayTasks(tasks);
-    localStorage.setItem("todo", JSON.stringify(tasks));
+    saveData();
 };
 form.addEventListener("submit", function (e) {
     e.preventDefault();

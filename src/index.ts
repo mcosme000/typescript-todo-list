@@ -20,7 +20,7 @@ interface Todo {
   completed: boolean
 }
 
-const tasks: Todo[] = loadData();
+let tasks: Todo[] = loadData();
 
 const createNewTask = (task: Todo): HTMLLIElement => {
   const newTask = document.createElement("LI") as HTMLLIElement;
@@ -40,19 +40,28 @@ const createCheckbox = (task: Todo): HTMLInputElement => {
   return checkbox;
 }
 
-const createDeleteButton = (): HTMLButtonElement => {
+const createDeleteButton = (task: Todo): HTMLButtonElement => {
   const deleteBtn = document.createElement("BUTTON") as HTMLButtonElement;
   deleteBtn.innerText = "Delete Task";
+  deleteBtn.addEventListener("click", () => {
+    deleteTask(task)
+  })
   return deleteBtn;
 }
 
+const deleteTask = (task: Todo) => {
+  const updatedTasks = tasks.filter((element) => element.text != task.text)
+  tasks = updatedTasks;
+  saveData();
+  displayTasks(tasks);
+}
 
 const displayTasks = (tasks: Todo[]) => {
   list.innerHTML = "";
   tasks.forEach((task) => {
     const newTask = createNewTask(task)
     const checkbox = createCheckbox(task);
-    const deleteBtn = createDeleteButton();
+    const deleteBtn = createDeleteButton(task);
     newTask.append(checkbox)
     newTask.append(deleteBtn)
     list?.appendChild(newTask)

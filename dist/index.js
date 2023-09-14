@@ -30,17 +30,26 @@ var createCheckbox = function (task) {
     });
     return checkbox;
 };
-var createDeleteButton = function () {
+var createDeleteButton = function (task) {
     var deleteBtn = document.createElement("BUTTON");
     deleteBtn.innerText = "Delete Task";
+    deleteBtn.addEventListener("click", function () {
+        deleteTask(task);
+    });
     return deleteBtn;
+};
+var deleteTask = function (task) {
+    var updatedTasks = tasks.filter(function (element) { return element.text != task.text; });
+    tasks = updatedTasks;
+    saveData();
+    displayTasks(tasks);
 };
 var displayTasks = function (tasks) {
     list.innerHTML = "";
     tasks.forEach(function (task) {
         var newTask = createNewTask(task);
         var checkbox = createCheckbox(task);
-        var deleteBtn = createDeleteButton();
+        var deleteBtn = createDeleteButton(task);
         newTask.append(checkbox);
         newTask.append(deleteBtn);
         list === null || list === void 0 ? void 0 : list.appendChild(newTask);

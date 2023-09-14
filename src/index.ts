@@ -3,12 +3,20 @@ const button = document.getElementById("submit")!;
 const input = document.getElementById("input")! as HTMLInputElement;
 const list = document.getElementById("tasks-container") as HTMLUListElement;
 
+
+// retrieve data from LocalStorage:
+const loadData = (): Todo[] => {
+  const JSONdata = localStorage.getItem("todo");
+  if (JSONdata === null) return []
+  return JSON.parse(JSONdata)
+}
+
 interface Todo {
   text: string,
   completed: boolean
 }
 
-const tasks: Todo[] = [];
+const tasks: Todo[] = loadData();
 
 const displayTasks = (tasks: Todo[]) => {
   list.innerHTML = "";
@@ -29,7 +37,8 @@ const addNewTask = (task: string) => {
     completed: false
   }
   tasks.push(newTodo);
-  displayTasks(tasks)
+  displayTasks(tasks);
+  localStorage.setItem("todo", JSON.stringify(tasks))
 }
 
 form.addEventListener("submit", (e) => {
@@ -37,3 +46,6 @@ form.addEventListener("submit", (e) => {
   addNewTask(input.value)
   input.value = ""
 })
+
+loadData();
+displayTasks(tasks);

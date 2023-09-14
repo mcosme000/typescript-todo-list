@@ -3,7 +3,14 @@ var form = document.querySelector("form");
 var button = document.getElementById("submit");
 var input = document.getElementById("input");
 var list = document.getElementById("tasks-container");
-var tasks = [];
+// retrieve data from LocalStorage:
+var loadData = function () {
+    var JSONdata = localStorage.getItem("todo");
+    if (JSONdata === null)
+        return [];
+    return JSON.parse(JSONdata);
+};
+var tasks = loadData();
 var displayTasks = function (tasks) {
     list.innerHTML = "";
     console.log(tasks);
@@ -23,9 +30,12 @@ var addNewTask = function (task) {
     };
     tasks.push(newTodo);
     displayTasks(tasks);
+    localStorage.setItem("todo", JSON.stringify(tasks));
 };
 form.addEventListener("submit", function (e) {
     e.preventDefault();
     addNewTask(input.value);
     input.value = "";
 });
+loadData();
+displayTasks(tasks);
